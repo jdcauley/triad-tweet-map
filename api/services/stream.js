@@ -17,9 +17,9 @@ module.exports = {
       stream.on('data', function(tweet) {
 
         if(tweet.coordinates || tweet.geo){
-
           Tweet.create({
             tweetId: tweet.id,
+            tweetIdString: tweet.id_str,
             text: tweet.text,
             userId: tweet.user.id,
             userName: tweet.user.name,
@@ -33,6 +33,7 @@ module.exports = {
             coordinates: tweet.coordinates,
             geo: tweet.geo,
             place: tweet.place,
+            timestamp: tweet.timestamp_ms
           }, function(err, status){
   					if(err){
   						Tweet.publishCreate(err);

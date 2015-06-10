@@ -1,14 +1,4 @@
-(function($){
-
-  function markerClick(){
-
-    var tweetBox = document.getElementById('tweet');
-
-    tweetBox.innerHTML = '<h1><a href="https://twitter.com/@' + this.data.userScreename + '">@' + this.data.userScreename + '</a></h1>' +
-                         '<p class="tweet-text">' + this.data.text + '</p>';
-
-
-  }
+(function($, twttr){
 
   var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 					maxZoom: 18,
@@ -21,7 +11,44 @@
       northEast = L.latLng(36.186469,-79.653),
       bounds = L.latLngBounds(southWest, northEast);
 
-  $.getJSON('/api/v1/tweets', function(data){
+  function markerClick(){
+
+    var marker = this;
+
+    var tweetBox = document.getElementById('tweet');
+    if(!marker.data.tweetIdString){
+
+      var id = marker.data.tweetId + '';
+      marker.data.tweetIdString = id;
+
+    };
+
+    tweetBox.innerHTML = '';
+
+    twttr.widgets.createTweet(
+      marker.data.tweetIdString,
+      document.getElementById('tweet'),
+      {
+        align: 'left'
+      }).then(function (el) {
+
+        if(el){
+
+        } else {
+
+          tweetBox.innerHTML = '<div><p>We\'re sorry this tweet was deleted</p></div>';
+          io.socket.get('/tweet/destroy', {id: marker.data.id}, function (data, jwres){
+            map.removeLayer(marker);
+          });
+        }
+      });
+
+
+  }
+
+
+
+  $.getJSON('/api/v1/tweets?count=100', function(data){
 
     var tweets = data.tweets;
 
@@ -35,6 +62,7 @@
             marker.data = tweets[i];
             marker.on('click', markerClick);
             marker.addTo(map);
+            var url = '/tweet/update/' + tweets[i];
         };
       }
     }
@@ -48,10 +76,14 @@
           inBounds = bounds.contains(latlng);
 
       if(inBounds){
+
         var marker = L.marker(latlng);
           marker.data = event.data;
           marker.on('click', markerClick);
           marker.addTo(map);
+
+          var url = '/tweet/update/' + event.data.id;
+          io.socket.get(url, {inbounds:true}, function (data, jwres){});
       };
 
     };
@@ -66,4 +98,4 @@
   L.rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
 
 
-})(jQuery);
+})(jQuery, twttr);

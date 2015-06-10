@@ -21,7 +21,7 @@ module.exports = {
 		if(params.count){
 			tweetQuery.limit(params.count);
 		} else {
-			tweetQuery.limit(15);
+			tweetQuery.limit(30);
 		}
 
 		if(params.offset){
