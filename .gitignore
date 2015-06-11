@@ -41,7 +41,8 @@
 
 config/local.js
 config/secrets.js
-
+config/models.js
+config/connections.js
 
 
 
