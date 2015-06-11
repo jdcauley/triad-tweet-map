@@ -28,6 +28,139 @@
 // @import 'pages/signup.less';
 //
 // etc.
+
+@green: #1FB687;
+
+@font-family-sans-serif: 'Roboto', Verdana, Helvetica, sans-serif;
+@font-family-serif: 'Merriweather', Georgia, Times, serif;
+@font-family-monospace: 'PT Mono',Menlo,Monaco,Consolas,"Courier New",monospace;
+
+@sm: 420px;
+@md: 780px;
+@lg: 980px;
+
+@brand-gray: #E6E4D5;
+@brand-primary: #008887;
+@brand-secondary: #E6E4D7;
+@brand-tertiary: #DB3C34;
+
+@light-gray: #F1F1F1;
+@brand-white: #fff;
+
+// Globals
+
+body{
+  font-family: @font-family-serif;
+}
+
+body,
+header,
+main,
+section,
+article,
+aside,
+div,
+ul,
+ol,
+li,
+p,
+a,
+span{
+  height: auto;
+  box-sizing: border-box;
+}
+
+ul, ol{
+  padding-left: 20px;
+}
+
+ul,
+ol,
+p{
+  margin-bottom: 12px;
+}
+
+code{
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+  font-family: @font-family-monospace;
+}
+
+a{
+  color: @brand-primary;
+  text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  line-height: 1.4;
+}
+
+h1{
+  font-size: 42px;
+  margin-bottom: 30px;
+}
+h2{
+  font-size: 36px;
+}
+h3{
+  font-size: 30px;
+}
+h4{
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+
+// Grid
+
+.col{
+  display: inline-block;
+  float: left;
+  height: auto;
+  width: 100%;
+  padding: 20px;
+  margin: 0;
+}
+.one-third{
+  width: 100%;
+  @media screen and (min-width: @sm){
+    width: 100%;
+  }
+  @media screen and (min-width: @md){
+    width: 33.33%;
+  }
+  @media screen and (min-width: @lg){
+    width: 33.33%;
+  }
+}
+.two-thirds{
+  width: 100%;
+  @media screen and (min-width: @sm){
+    width: 100%;
+  }
+  @media screen and (min-width: @md){
+    width: 66.66%;
+    &.offset-one-third{
+      margin-left: 33.33%;
+    }
+  }
+  @media screen and (min-width: @lg){
+    width: 66.66%;
+    &.offset-one-third{
+      margin-left: 33.33%;
+    }
+  }
+}
+
+
 html, body{
   height: 100%;
   margin: 0;
@@ -39,19 +172,24 @@ div{
 }
 .map{
   height: 100%;
-  width: 70%;
 }
 
 .column{
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
   display: block;
-  height: 100%;
-  width: 30%;
-  padding: 20px;
-  background: #202637;
-  color: white;
+  height: auto;
+  background: #32343B;
+  color: @brand-white;
+  overflow: scroll;
+  @media screen and (min-width: @md){
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+  }
+
 }
 
 .mycluster{
@@ -60,4 +198,27 @@ div{
   border-radius: 50%;
   text-align: center;
   vertical-align: middle
+}
+
+.brand{
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  display: block;
+  width: 100%;
+  .logo{
+    display: block;
+    width: 80%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.leaflet-marker-icon{
+  border: 2px solid #fff;
+  border-radius: 50%;
+  &.active{
+    border: 2px solid @green;
+  }
 }

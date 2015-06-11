@@ -13,7 +13,12 @@
 
   function markerClick(){
 
+
     var marker = this;
+
+
+    $('.leaflet-marker-icon').removeClass('active');
+    $(marker._icon).addClass('active');
 
     var tweetBox = document.getElementById('tweet');
     if(!marker.data.tweetIdString){
@@ -58,7 +63,14 @@
             inBounds = bounds.contains(latlng);
 
         if(inBounds){
-          var marker = L.marker(latlng);
+
+          var twitterAvatar = L.icon({
+            iconUrl: tweets[i].avatar,
+
+            iconSize:     [35, 35], // size of the icon
+          });
+
+          var marker = L.marker(latlng, {icon: twitterAvatar});
             marker.data = tweets[i];
             marker.on('click', markerClick);
             marker.addTo(map);
@@ -77,7 +89,13 @@
 
       if(inBounds){
 
-        var marker = L.marker(latlng);
+        var twitterAvatar = L.icon({
+          iconUrl: event.data.avatar,
+
+          iconSize:     [30, 30], // size of the icon
+        });
+
+        var marker = L.marker(latlng, {icon: twitterAvatar});
           marker.data = event.data;
           marker.on('click', markerClick);
           marker.addTo(map);
