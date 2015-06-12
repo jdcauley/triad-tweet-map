@@ -62,24 +62,17 @@ module.exports = {
         if(err) {
             console.log(err);
         } else {
-            ig.location_search({ lat: 36.066964, lng: -79.793553 }, [5000], function(err, result, remaining, limit) {
-
-                if(err) console.log(err);
-
-                if(result){
             
-                    async.eachSeries(result, function(location, asyncCB){
-                        ig.add_location_subscription(location.id, 'http://52.7.113.209:1337/inbound/instagram', '51799897.953495a.d8e94ac067294a82838a1600a29a08f8', function(err, result, remaining, limit){
-                            console.log(result);
-                            asyncCB();
-                        });
-                    }, function(err){
-                        console.log('async done'); 
-                    });
+            ig.add_geography_subscription(36.066964, -79.793553, 5000, 'http://52.7.113.209:1337/inbound/instagram', '51799897.953495a.d8e94ac067294a82838a1600a29a08f8', function(err, result, remaining, limit){
+                if(err){
+                    console.log(err);
                 }
-    
-    
+                if(result){
+                    console.log(result);
+                }
+                
             });
+
             
         }
         

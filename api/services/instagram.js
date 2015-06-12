@@ -7,29 +7,40 @@ module.exports = {
 
   location: function(params){
       console.log('in service');
-    ig.location_search({ lat: 36.143635, lng: -79.881991 }, 5000, function(err, result, remaining, limit) {
-
-      if(result){
-        console.log(result);
-        
-        async.eachSeries(result, function(location, asyncCB){
-            
-            ig.location_media_recent(location.id, [null, null, params[0].timestamp, params[0].timestamp], function(err, media, pagination, remaining, limit) {
-                if(err) console.log(err);
-                
-                if(media){
-                    console.log(media);
-                    asyncCB();
-                }
-            });    
-            
-        }, function(err){
-            console.log('async done');
-        });
-        
-      }
-      
-    });
+      console.log(params);
+      ig.media_search(36.143635, -79.881991, [null, null, null, null], function(err, media, remaining, limit) {
+          if(err) console.log(err);
+          if(media) console.log(media);
+          if(media){
+            console.log(media.length);
+            async.eachSeries(media, function(gram, asyncCB){
+              
+              Status.findOne({gramId: gram.id}, function(err, found){
+                  if(err){
+                      asyncCB();
+                  }
+                  if(found){
+                      asyncCB();
+                  } else {
+                      Status.create({gramId: gram.id, gramUsername: gram.user.username, gramUserId: gram.user.id, full: gram}, function(err, saved){
+                        if(err){
+                            asyncCB();
+                        }
+                        if(saved){
+                            asyncCB();
+                        }
+                    });
+                  }
+              });
+              
+            }, function(err){
+              if(err) console.log(err);
+              console.log('Async Done');
+            })
+          }
+          
+      });
+    
 
   }
 
